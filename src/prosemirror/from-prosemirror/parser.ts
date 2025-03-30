@@ -27,11 +27,10 @@ import type * as Unist from "unist";
 import { handleAll, handleOne } from "./handler.js";
 
 import {
-  fromProseMirrorNode,
   fromProseMirrorMark,
-  pmTextHandler,
-  type FromProseMirrorNodeFactory,
   type FromProseMirrorMarkFactory,
+  fromProseMirrorNode,
+  type FromProseMirrorNodeFactory,
 } from "./utils.js";
 
 export interface FromProseMirrorToUnistOptions<
@@ -101,14 +100,16 @@ export function createFromProseMirrorParser<
   TNode extends Unist.Node,
   TRootNode extends Unist.Node = Unist.Node,
 >(): FromProseMirrorParser<TNode, TRootNode> {
+  type Res = FromProseMirrorParser<TNode, TRootNode>;
   const _createContext = createContext<TNode>;
   const _fromProseMirrorToUnist = fromProseMirrorToUnist<TRootNode>;
 
   return {
     createContext: _createContext,
     fromProseMirrorToUnist: _fromProseMirrorToUnist,
-    fromProseMirrorNode,
-    fromProseMirrorMark,
-    pmTextHandler,
+    fromProseMirrorNode:
+      fromProseMirrorNode as unknown as Res["fromProseMirrorNode"],
+    fromProseMirrorMark:
+      fromProseMirrorMark as unknown as Res["fromProseMirrorMark"],
   };
 }

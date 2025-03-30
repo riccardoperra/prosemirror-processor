@@ -100,16 +100,13 @@ export function handleOne(
   if (handler) {
     return handler(pmNode, parent, context);
   }
-
   if (pmNode.type === schema.topNodeType) {
     const children = context.handleAll(pmNode);
     const parent: Unist.Parent = { type: "root", children };
     return parent;
   }
-
   if (pmNode.type === schema.nodes.text) {
-    return { type: "text", value: pmNode.text || "" } as Unist.Node;
+    return context.textHandler(pmNode, parent, context);
   }
-
   return null;
 }
