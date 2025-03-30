@@ -45,6 +45,7 @@ export function unistNodeFromMarkdown(
     .use(
       (transformers ?? []).map((transformer) => {
         return function handler() {
+          // @ts-expect-error fix
           return transformer.handler.call(this, {}); // Use call to keep context
         };
       }),
