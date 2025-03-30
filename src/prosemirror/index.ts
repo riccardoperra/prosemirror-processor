@@ -23,4 +23,4 @@ export type {
 } from "./utils.js";
 
 export * from "./from-prosemirror.js";
-export * from "./to-unist.js";
+export * from "./to-prosemirror.js";

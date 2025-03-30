@@ -34,7 +34,7 @@ export type ToProseMirrorParseContext<TNode extends Unist.Node = Unist.Node> = {
   handle: (
     node: Unist.Node,
     parent: Unist.Node | undefined,
-  ) => ProseMirrorNode[];
+  ) => ProseMirrorNode | ProseMirrorNode[] | null;
 };
 
 export interface ToProseMirrorCreateContextOptions<TNode extends Unist.Node> {

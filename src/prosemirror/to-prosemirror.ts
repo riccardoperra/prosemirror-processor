@@ -14,7 +14,22 @@
  * limitations under the License.
  */
 
-export * from "./to-prosemirror/context.js";
-export * from "./to-prosemirror/parser.js";
-export * from "./to-prosemirror/handler.js";
-export * from "./to-prosemirror/utils.js";
+export {
+  toProseMirrorNode,
+  toProseMirrorMark,
+} from "./to-prosemirror/utils.js";
+export {
+  type HastNodeHandlers,
+  type ToProseMirrorParseContext,
+  type HastNodeHandler,
+} from "./to-prosemirror/context.js";
+export {
+  type FromUnistToProseMirrorOptions,
+  createContext as createToProseMirrorContext,
+  type ToProseMirrorParser,
+  fromUnistToProseMirror,
+} from "./to-prosemirror/parser.js";
+export {
+  handleAll as toProseMirrorHandleAll,
+  handle as toProseMirrorHandle,
+} from "./to-prosemirror/handler.js";
