@@ -50,6 +50,7 @@ It has two paragraphs.
 `);
     const doc = fromUnistToProseMirror(unistNode, {
       nodeHandlers: handlers,
+      schema,
     })!;
 
     assert.equal(doc.childCount, 2);
@@ -71,6 +72,7 @@ This is a document.
 `);
     const doc = fromUnistToProseMirror(unistNode, {
       nodeHandlers: handlers,
+      schema,
     })!;
 
     assert.equal(doc.childCount, 2);
@@ -96,6 +98,7 @@ It has two *paragraphs.*
 `);
     const doc = fromUnistToProseMirror(unistNode, {
       nodeHandlers: handlers,
+      schema,
     })!;
 
     assert.equal(doc.childCount, 2);
@@ -125,6 +128,7 @@ It has two **_paragraphs._**
 `);
     const doc = fromUnistToProseMirror(unistNode, {
       nodeHandlers: handlers,
+      schema,
     })!;
 
     assert.equal(doc.childCount, 2);
@@ -163,6 +167,7 @@ It has two paragraphs.
 `);
     const doc = fromUnistToProseMirror(unistNode, {
       nodeHandlers: handlers,
+      schema,
     })!;
 
     assert.equal(doc.childCount, 2);

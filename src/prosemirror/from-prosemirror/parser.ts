@@ -15,7 +15,7 @@
  */
 
 import type { Schema } from "prosemirror-model";
-import type { ProseMirrorNode } from "../types.js";
+import type { ProseMirrorMark, ProseMirrorNode } from "../types.js";
 import type {
   FromProseMirrorCreateContextOptions,
   FromProseMirrorParseContext,
@@ -38,7 +38,8 @@ export interface FromProseMirrorToUnistOptions<
   TProseMirrorMarks extends string = string,
 > {
   schema: Schema<TProseMirrorNodes, TProseMirrorMarks>;
-  name: (pmNode: ProseMirrorNode) => string;
+  nodeName: (pmNode: ProseMirrorNode) => string;
+  markName: (pmNode: ProseMirrorMark) => string;
   textHandler: ProseMirrorNodeHandler;
   nodeHandlers: ProseMirrorNodeHandlers<TProseMirrorNodes>;
   markHandlers: ProseMirrorMarkHandlers<TProseMirrorMarks>;
@@ -49,7 +50,8 @@ export function fromProseMirrorToUnist<TNode extends Unist.Node>(
   options: FromProseMirrorToUnistOptions,
 ): TNode {
   const context = createContext({
-    name: options.name,
+    nodeName: options.nodeName,
+    markName: options.markName,
     textHandler: options.textHandler,
     nodeHandlers: options.nodeHandlers,
     markHandlers: options.markHandlers,
@@ -78,9 +80,11 @@ export interface FromProseMirrorParser<
 export function createContext<T extends Unist.Node>(
   options: FromProseMirrorCreateContextOptions<T>,
 ): FromProseMirrorParseContext<T> {
-  const { nodeHandlers, markHandlers, textHandler, name } = options;
+  const { nodeHandlers, markHandlers, textHandler, nodeName, markName } =
+    options;
   return {
-    name,
+    nodeName,
+    markName,
     nodeHandlers,
     markHandlers,
     textHandler,

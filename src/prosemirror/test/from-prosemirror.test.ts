@@ -57,7 +57,8 @@ describe("mdast-util-from-prosemirror", async () => {
     const mdast = fromProseMirrorToUnist(
       doc(p("This is a document."), p("It has two paragraphs.")),
       {
-        name: (node) => node.type.name,
+        nodeName: (node) => node.type.name,
+        markName: (node) => node.type.name,
         schema,
         textHandler: pmTextHandler,
         nodeHandlers: {
@@ -81,7 +82,8 @@ It has two paragraphs.
     const mdast = fromProseMirrorToUnist(
       doc(p("This is a document."), blockquote(p("It has two paragraphs."))),
       {
-        name: (node) => node.type.name,
+        nodeName: (node) => node.type.name,
+        markName: (node) => node.type.name,
         schema,
         textHandler: pmTextHandler,
         nodeHandlers: {
@@ -106,7 +108,8 @@ It has two paragraphs.
     const mdast = fromProseMirrorToUnist(
       doc(p("This is a ", em("document.")), p("It has two paragraphs.")),
       {
-        name: (node) => node.type.name,
+        nodeName: (node) => node.type.name,
+        markName: (node) => node.type.name,
         schema,
         textHandler: pmTextHandler,
         nodeHandlers: {
@@ -143,7 +146,8 @@ It has two paragraphs.
         p("It has two paragraphs."),
       ),
       {
-        name: (node) => node.type.name,
+        nodeName: (node) => node.type.name,
+        markName: (node) => node.type.name,
         schema,
         textHandler: pmTextHandler,
         nodeHandlers: {
@@ -175,7 +179,8 @@ It has two paragraphs.
         p("It has two paragraphs."),
       ),
       {
-        name: (node) => node.type.name,
+        nodeName: (node) => node.type.name,
+        markName: (node) => node.type.name,
         schema,
         textHandler: pmTextHandler,
         nodeHandlers: {

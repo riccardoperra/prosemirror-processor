@@ -36,7 +36,7 @@ function processChildPartition(
     nodes.map(({ node, marks }) => ({ node, marks: marks.slice(1) })),
     parent,
   );
-  const handler = context.markHandlers[firstMark.type.name];
+  const handler = context.markHandlers[context.markName(firstMark)];
   if (!handler) return children;
   return handler(firstMark, parent, children, context);
 }
@@ -94,7 +94,7 @@ export function handleOne(
   parent?: ProseMirrorNode,
 ): Unist.Node | Unist.Node[] | null {
   const schema = pmNode.type.schema;
-  const name = context.name(pmNode);
+  const name = context.nodeName(pmNode);
 
   const handler = context.nodeHandlers[name];
   if (handler) {
