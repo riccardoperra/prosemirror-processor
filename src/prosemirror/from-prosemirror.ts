@@ -14,14 +14,23 @@
  * limitations under the License.
  */
 
-export { convertUnistToProsemirror } from "./prosemirrorToUnist.js";
-
-export { convertPmSchemaToUnist } from "./unistToProsemirror.js";
-
-export type * from "./types.js";
-
-export { pmNode, pmMark } from "./utils.js";
+export { handleAll, handleOne } from "./from-prosemirror/handler.js";
+export {
+  type FromProseMirrorParser,
+  type FromProseMirrorToUnistOptions,
+  createContext,
+  createFromProseMirrorParser,
+  fromProseMirrorToUnist,
+} from "./from-prosemirror/parser.js";
 export type {
-  ProseMirrorNodeCreatorResult,
-  ProseMirrorNodeCreatorOptions,
-} from "./utils.js";
+  FromProseMirrorCreateContextOptions,
+  FromProseMirrorParseContext,
+  ProseMirrorMarkHandlers,
+  ProseMirrorMarkHandler,
+  ProseMirrorNodeHandlers,
+  ProseMirrorNodeHandler,
+} from "./from-prosemirror/context.js";
+export {
+  fromProseMirrorMark,
+  fromProseMirrorNode,
+} from "./from-prosemirror/utils.js";

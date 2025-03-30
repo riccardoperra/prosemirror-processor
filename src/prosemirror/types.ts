@@ -15,10 +15,15 @@
  */
 
 import type { Node as $UnistNode } from "unist";
-import type { Node as $ProseMirrorNode, Mark, Schema } from "prosemirror-model";
+import type {
+  Node as $ProseMirrorNode,
+  Mark as $ProseMirrorMark,
+  Schema,
+} from "prosemirror-model";
 
 export type UnistNode = $UnistNode;
 export type ProseMirrorNode = $ProseMirrorNode;
+export type ProseMirrorMark = $ProseMirrorMark;
 
 declare module "prosemirror-model" {
   interface NodeSpec {

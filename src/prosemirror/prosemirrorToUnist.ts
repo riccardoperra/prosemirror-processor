@@ -15,22 +15,21 @@
  */
 
 import {
-  type Attrs,
+  DOMParser as PMDOMParser,
   type MarkSpec,
-  type Node as ProsemirrorNode,
+  type Node as PMNode,
   type NodeSpec,
   type Schema,
 } from "prosemirror-model";
 import type { UnistNode } from "./types.js";
 import type { Html } from "mdast";
-import { DOMParser as ProseMirrorDOMParser } from "prosekit/pm/model";
 
 type SchemaMap = Record<string, MarkSpec | NodeSpec>;
 
 export function convertUnistToProsemirror(
   unistNode: UnistNode,
   schema: Schema,
-): ProsemirrorNode {
+): PMNode {
   const context: Partial<NonNullable<unknown>> = {};
   const schemaMap = {} as SchemaMap;
   schema.spec.marks.forEach((key, mark) => {
@@ -61,8 +60,7 @@ function convertNode(
         value,
         "text/html",
       );
-      const slice = ProseMirrorDOMParser.fromSchema(schema).parse(doc.body);
-      console.dir(slice.content.toJSON(), { depth: null });
+      const slice = PMDOMParser.fromSchema(schema).parse(doc.body);
       return slice.content.content;
     }
   }
@@ -74,27 +72,11 @@ function convertNode(
     );
     return [];
   }
-  const convertedChildren = [] as ProsemirrorNode[];
+  const convertedChildren = [] as PMNode[];
   if ("children" in unistNode && Array.isArray(unistNode.children)) {
     for (const child of unistNode.children as UnistNode[]) {
       convertedChildren.push(...convertNode(child, schema, map, context));
     }
   }
   return spec.unistToNode(unistNode, schema, convertedChildren, context);
-}
-
-export function createProseMirrorNode(
-  nodeName: string | null,
-  schema: Schema<string, string>,
-  children: ProsemirrorNode[],
-  attrs: Attrs = {},
-): ProsemirrorNode[] {
-  if (nodeName === null) {
-    return [];
-  }
-  const proseMirrorNode = schema.nodes[nodeName].createAndFill(attrs, children);
-  if (proseMirrorNode === null) {
-    return [];
-  }
-  return [proseMirrorNode];
 }
