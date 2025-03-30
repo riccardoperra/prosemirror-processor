@@ -26,6 +26,14 @@ import type {
 import type * as Unist from "unist";
 import { handleAll, handleOne } from "./handler.js";
 
+import {
+  fromProseMirrorNode,
+  fromProseMirrorMark,
+  pmTextHandler,
+  type FromProseMirrorNodeFactory,
+  type FromProseMirrorMarkFactory,
+} from "./utils.js";
+
 export interface FromProseMirrorToUnistOptions<
   TProseMirrorNodes extends string = string,
   TProseMirrorMarks extends string = string,
@@ -51,25 +59,27 @@ export function fromProseMirrorToUnist<TNode extends Unist.Node>(
 }
 
 export interface FromProseMirrorParser<
-  T extends Unist.Node,
+  TNode extends Unist.Node,
   TRootNode extends Unist.Node = Unist.Node,
 > {
   createContext: (
-    options: FromProseMirrorCreateContextOptions<T>,
-  ) => FromProseMirrorParseContext<T>;
+    options: FromProseMirrorCreateContextOptions<TNode>,
+  ) => FromProseMirrorParseContext<TNode>;
 
   fromProseMirrorToUnist: (
     pmNode: ProseMirrorNode,
     options: FromProseMirrorToUnistOptions,
   ) => TRootNode;
+
+  fromProseMirrorNode: FromProseMirrorNodeFactory<TNode>;
+
+  fromProseMirrorMark: FromProseMirrorMarkFactory<TNode>;
 }
 
 export function createContext<T extends Unist.Node>(
   options: FromProseMirrorCreateContextOptions<T>,
 ): FromProseMirrorParseContext<T> {
   const { nodeHandlers, markHandlers, textHandler, name } = options;
-  const _handleCache = new WeakMap<ProseMirrorNode, unknown>();
-  const _handleAllCache = new WeakMap<ProseMirrorNode, unknown>();
   return {
     name,
     nodeHandlers,
@@ -79,17 +89,10 @@ export function createContext<T extends Unist.Node>(
       pmNode: ProseMirrorNode,
       parent?: ProseMirrorNode,
     ): TNode {
-      if (_handleCache.has(pmNode)) return _handleCache.get(pmNode) as TNode;
-      const result = handleOne(this, pmNode, parent) as TNode;
-      _handleCache.set(pmNode, result);
-      return result;
+      return handleOne(this, pmNode, parent) as TNode;
     },
     handleAll(pmNode: ProseMirrorNode): T[] {
-      if (_handleAllCache.has(pmNode))
-        return _handleAllCache.get(pmNode) as T[];
-      const result = handleAll(this, pmNode) as T[];
-      _handleAllCache.set(pmNode, result);
-      return result;
+      return handleAll(this, pmNode) as T[];
     },
   };
 }
@@ -104,5 +107,8 @@ export function createFromProseMirrorParser<
   return {
     createContext: _createContext,
     fromProseMirrorToUnist: _fromProseMirrorToUnist,
+    fromProseMirrorNode,
+    fromProseMirrorMark,
+    pmTextHandler,
   };
 }

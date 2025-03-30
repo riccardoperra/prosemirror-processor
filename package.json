@@ -17,7 +17,7 @@
     }
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest --run",
     "dev": "tsup --watch",
     "lint": "eslint ./src",
     "build": "tsup"
@@ -61,8 +61,9 @@
     "eslint": "link:@tanstack/config/eslint",
     "eslint-plugin-unused-imports": "^4.1.4",
     "prettier": "^3.5.1",
+    "prosemirror-test-builder": "^1.1.1",
     "tsup": "^8.3.5",
     "typescript": "^5.7.3",
-    "vitest": "^3.0.5"
+    "vitest": "^3.0.9"
   }
 }

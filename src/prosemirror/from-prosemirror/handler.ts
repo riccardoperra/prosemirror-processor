@@ -15,51 +15,77 @@
  */
 
 import type * as Unist from "unist";
-import type { ProseMirrorNode } from "../types.js";
+import type { ProseMirrorMark, ProseMirrorNode } from "../types.js";
 import type { FromProseMirrorParseContext } from "./context.js";
 
-function handleNode(
+interface PmMarkedNode {
+  node: ProseMirrorNode;
+  marks: readonly ProseMirrorMark[];
+}
+
+function processChildPartition(
   context: FromProseMirrorParseContext,
-  node: ProseMirrorNode,
-  parent: ProseMirrorNode | undefined,
+  nodes: PmMarkedNode[],
+  parent: ProseMirrorNode,
 ) {
-  const resultNodes: Unist.Node[] = [];
-  let convertedChildren: Unist.Node[] = [];
-  for (let i = 0; i < node.childCount; ++i) {
-    const child = node.child(i);
-    convertedChildren = convertedChildren.concat(
-      handleNode(context, child, node),
-    );
-  }
+  const firstChild = nodes[0];
+  const firstMark = firstChild?.marks[0];
+  if (!firstMark) return nodes.map((node) => context.handle(node.node, parent));
+  const children = hydrateMarks(
+    context,
+    nodes.map(({ node, marks }) => ({ node, marks: marks.slice(1) })),
+    parent,
+  );
+  const handler = context.markHandlers[firstMark.type.name];
+  if (!handler) return children;
+  return handler(firstMark, parent, children, context);
+}
 
-  for (let processedNode of convertedChildren) {
-    for (const mark of node.marks) {
-      let hasProcessedMark = false;
-      const markHandler = context.markHandlers[mark.type.name];
-      if (markHandler) {
-        const result = markHandler(mark, node, [processedNode], context);
-        if (result) {
-          resultNodes.push(...(Array.isArray(result) ? result : [result]));
-          hasProcessedMark = true;
-        }
-      }
-
-      if (!hasProcessedMark) {
-        console.warn(
-          `Couldn't find any way to convert ProseMirror mark of type "${mark.type.name}" to a unist node.`,
-        );
-      }
+function hydrateMarks(
+  context: FromProseMirrorParseContext,
+  children: PmMarkedNode[],
+  parent: ProseMirrorNode,
+): Unist.Node[] {
+  const partitioned = children.reduce<PmMarkedNode[][]>((acc, child) => {
+    const lastPartition = acc[acc.length - 1];
+    if (!lastPartition) {
+      return [[child]];
     }
-  }
+    const lastChild = lastPartition[lastPartition.length - 1];
+    if (!lastChild) {
+      return [...acc.slice(0, acc.length), [child]];
+    }
 
-  return resultNodes;
+    if (
+      (!child.marks.length && !lastChild.marks.length) ||
+      (child.marks.length &&
+        lastChild.marks.length &&
+        child.marks[0]?.eq(lastChild.marks[0]))
+    ) {
+      return [
+        ...acc.slice(0, acc.length - 1),
+        [...lastPartition.slice(0, lastPartition.length), child],
+      ];
+    }
+
+    return [...acc, [child]];
+  }, []);
+
+  return partitioned
+    .flatMap((nodes) => processChildPartition(context, nodes, parent))
+    .filter((node): node is Unist.Node | Unist.Node[] => !!node)
+    .flat();
 }
 
 export function handleAll(
   context: FromProseMirrorParseContext,
   pmNode: ProseMirrorNode,
 ): Unist.Node[] {
-  return handleNode(context, pmNode, undefined);
+  return hydrateMarks(
+    context,
+    pmNode.children.map((child) => ({ node: child, marks: child.marks })),
+    pmNode,
+  );
 }
 
 export function handleOne(

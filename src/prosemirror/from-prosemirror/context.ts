@@ -34,12 +34,12 @@ export type ProseMirrorMarkHandlers<TMarks extends string = string> = Record<
   ProseMirrorMarkHandler
 >;
 
-export type ProseMirrorMarkHandler = (
+export type ProseMirrorMarkHandler<TNode extends Unist.Node = Unist.Node> = (
   mark: Mark,
   node: ProseMirrorNode,
-  children: Unist.Node[],
+  children: TNode[],
   context: FromProseMirrorParseContext,
-) => Unist.Node | Unist.Node[] | null;
+) => TNode | TNode[] | null;
 
 export type FromProseMirrorParseContext<TNode extends Unist.Node = Unist.Node> =
   {

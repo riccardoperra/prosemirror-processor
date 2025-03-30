@@ -22,6 +22,19 @@ import type {
 import type * as Unist from "unist";
 import type { ProseMirrorMark, ProseMirrorNode } from "../types.js";
 
+export const pmTextHandler: ProseMirrorNodeHandler = (pmNode) => {
+  return { type: "text", value: pmNode.text || "" };
+};
+
+export type FromProseMirrorNodeFactory<TNode extends Unist.Node> = <
+  Type extends TNode["type"],
+>(
+  type: Type,
+  getAttrs?: (
+    pmNode: ProseMirrorNode,
+  ) => Omit<Extract<TNode, { type: Type }>, "type" | "children">,
+) => ProseMirrorNodeHandler<TNode>;
+
 export function fromProseMirrorNode<Type extends Unist.Node["type"]>(
   type: Type,
   getAttrs?: (
@@ -37,6 +50,15 @@ export function fromProseMirrorNode<Type extends Unist.Node["type"]>(
     };
   };
 }
+
+export type FromProseMirrorMarkFactory<TNode extends Unist.Node> = <
+  Type extends TNode["type"],
+>(
+  type: Type,
+  getAttrs?: (
+    pmNode: ProseMirrorMark,
+  ) => Omit<Extract<TNode, { type: Type }>, "type" | "children">,
+) => ProseMirrorMarkHandler<TNode>;
 
 export function fromProseMirrorMark<Type extends Unist.Node["type"]>(
   type: Type,

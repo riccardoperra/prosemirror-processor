@@ -33,4 +33,5 @@ export type {
 export {
   fromProseMirrorMark,
   fromProseMirrorNode,
+  pmTextHandler,
 } from "./from-prosemirror/utils.js";
