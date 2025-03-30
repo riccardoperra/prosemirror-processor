@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-export { handleAll, handleOne } from "./from-prosemirror/handler.js";
+export {
+  handleAll as fromProseMirrorHandleAll,
+  handleOne as fromProseMirrorHandleOne,
+} from "./from-prosemirror/handler.js";
 export {
   type FromProseMirrorParser,
   type FromProseMirrorToUnistOptions,

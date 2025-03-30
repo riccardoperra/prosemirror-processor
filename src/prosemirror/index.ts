@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-export { convertUnistToProsemirror } from "./prosemirrorToUnist.js";
-
-export { convertPmSchemaToUnist } from "./unistToProsemirror.js";
-
 export type * from "./types.js";
-
 export { pmNode, pmMark } from "./utils.js";
+
 export type {
   ProseMirrorNodeCreatorResult,
   ProseMirrorNodeCreatorOptions,
