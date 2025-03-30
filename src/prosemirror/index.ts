@@ -14,26 +14,11 @@
  * limitations under the License.
  */
 
-import { defineConfig } from "tsup";
-import type { Options } from "tsup";
+export {
+  convertUnistToProsemirror,
+  createProseMirrorNode,
+} from "./prosemirrorToUnist.js";
 
-const config: Options[] = defineConfig([
-  {
-    name: "Transformer/Unified",
-    clean: true,
-    entry: ["./src/unified/index.ts"],
-    outDir: "./dist/unified",
-    dts: true,
-    format: "esm",
-  },
-  {
-    name: "Transformer/ProseMirror",
-    clean: true,
-    entry: ["./src/prosemirror/index.ts"],
-    outDir: "./dist/prosemirror",
-    dts: true,
-    format: "esm",
-  },
-]) as Options[];
+export { convertPmSchemaToUnist } from "./unistToProsemirror.js";
 
-export default config;
+export type * from "./types.js";
