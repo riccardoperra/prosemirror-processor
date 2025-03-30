@@ -14,26 +14,11 @@
  * limitations under the License.
  */
 
-import { defineConfig } from "tsup";
-import type { Options } from "tsup";
+import { defineProject, type UserWorkspaceConfig } from "vitest/config";
 
-const config: Options[] = defineConfig([
-  {
-    name: "Transformer/Unified",
-    clean: true,
-    entry: ["./src/unist/index.ts"],
-    outDir: "./dist/unist",
-    dts: true,
-    format: "esm",
+const _default_1: UserWorkspaceConfig = defineProject({
+  test: {
+    name: "@prosemirror-processor/unist",
   },
-  {
-    name: "Transformer/ProseMirror",
-    clean: true,
-    entry: ["./src/prosemirror/index.ts"],
-    outDir: "./dist/prosemirror",
-    dts: true,
-    format: "esm",
-  },
-]) as Options[];
-
-export default config;
+});
+export default _default_1;

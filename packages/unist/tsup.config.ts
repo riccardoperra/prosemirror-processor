@@ -14,8 +14,20 @@
  * limitations under the License.
  */
 
-import { defineConfig, defineProject } from "vitest/config";
+import { defineConfig } from "tsup";
+import type { Options } from "tsup";
 
-export default defineConfig({
-  test: {},
-});
+const config: Options[] = defineConfig([
+  {
+    name: "unist",
+    entry: {
+      index: "./src/index.ts",
+      mdast: "./src/mdast/index.ts",
+    },
+    outDir: "./dist",
+    dts: true,
+    format: "esm",
+  },
+]) as Options[];
+
+export default config;

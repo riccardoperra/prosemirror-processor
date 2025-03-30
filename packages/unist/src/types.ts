@@ -14,26 +14,12 @@
  * limitations under the License.
  */
 
-import { defineConfig } from "tsup";
-import type { Options } from "tsup";
+import type { Node as $UnistNode } from "unist";
+import type {
+  Mark as $ProseMirrorMark,
+  Node as $ProseMirrorNode,
+} from "prosemirror-model";
 
-const config: Options[] = defineConfig([
-  {
-    name: "Transformer/Unified",
-    clean: true,
-    entry: ["./src/unist/index.ts"],
-    outDir: "./dist/unist",
-    dts: true,
-    format: "esm",
-  },
-  {
-    name: "Transformer/ProseMirror",
-    clean: true,
-    entry: ["./src/prosemirror/index.ts"],
-    outDir: "./dist/prosemirror",
-    dts: true,
-    format: "esm",
-  },
-]) as Options[];
-
-export default config;
+export type UnistNode = $UnistNode;
+export type ProseMirrorNode = $ProseMirrorNode;
+export type ProseMirrorMark = $ProseMirrorMark;

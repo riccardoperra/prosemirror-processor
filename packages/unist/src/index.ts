@@ -14,26 +14,13 @@
  * limitations under the License.
  */
 
-import { defineConfig } from "tsup";
-import type { Options } from "tsup";
+export type * from "./types.js";
+export { pmNode, pmMark } from "./utils.js";
 
-const config: Options[] = defineConfig([
-  {
-    name: "Transformer/Unified",
-    clean: true,
-    entry: ["./src/unist/index.ts"],
-    outDir: "./dist/unist",
-    dts: true,
-    format: "esm",
-  },
-  {
-    name: "Transformer/ProseMirror",
-    clean: true,
-    entry: ["./src/prosemirror/index.ts"],
-    outDir: "./dist/prosemirror",
-    dts: true,
-    format: "esm",
-  },
-]) as Options[];
+export type {
+  ProseMirrorNodeCreatorResult,
+  ProseMirrorNodeCreatorOptions,
+} from "./utils.js";
 
-export default config;
+export * from "./from-prosemirror/index.js";
+export * from "./to-prosemirror/index.js";
