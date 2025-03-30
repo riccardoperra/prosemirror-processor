@@ -94,7 +94,7 @@ export function handleOne(
   parent?: ProseMirrorNode,
 ): Unist.Node | Unist.Node[] | null {
   const schema = pmNode.type.schema;
-  const name = pmNode.type.name;
+  const name = context.name(pmNode);
 
   const handler = context.nodeHandlers[name];
   if (handler) {

@@ -21,22 +21,27 @@ import type { Attrs, MarkType, NodeType } from "prosemirror-model";
 import { pmMark, pmNode } from "../utils.js";
 
 export function toProseMirrorNode<TNode extends Unist.Node>(
-  nodeType: NodeType,
+  nodeType: NodeType | string,
   getAttrs?: (unistNode: TNode) => Attrs | null,
 ): HastNodeHandler<TNode> {
   return (node, _, context) => {
-    return pmNode(nodeType, context.handleAll(node), getAttrs?.(node) ?? null, {
+    const type =
+      typeof nodeType === "string" ? context.schema.nodes[nodeType] : nodeType;
+
+    return pmNode(type, context.handleAll(node), getAttrs?.(node) ?? null, {
       mode: "fill",
     });
   };
 }
 
 export function toProseMirrorMark<TNode extends Unist.Node>(
-  markType: MarkType,
+  markType: MarkType | string,
   getAttrs?: (unistNode: TNode) => Attrs | null,
 ): HastNodeHandler<TNode> {
   return (node, _, context) => {
+    const type =
+      typeof markType === "string" ? context.schema.marks[markType] : markType;
     const children = context.handleAll(node);
-    return pmMark(markType, children, getAttrs?.(node) ?? null);
+    return pmMark(type, children, getAttrs?.(node) ?? null);
   };
 }

@@ -50,7 +50,6 @@ export function handle(
   parent: Unist.Node | undefined,
 ): ProseMirrorNode | ProseMirrorNode[] | null {
   let type = unistNode.type;
-
   const handler = context.nodeHandlers[type];
   if (!handler) {
     console.warn(

@@ -16,6 +16,7 @@
 
 import type * as Unist from "unist";
 import type { ProseMirrorNode } from "../types.js";
+import type { Schema } from "prosemirror-model";
 
 export type HastNodeHandlers<TNodes extends string = string> = Record<
   TNodes,
@@ -29,6 +30,7 @@ export type HastNodeHandler<TNode extends Unist.Node = Unist.Node> = (
 ) => ProseMirrorNode | ProseMirrorNode[] | null;
 
 export type ToProseMirrorParseContext<TNode extends Unist.Node = Unist.Node> = {
+  schema: Schema;
   nodeHandlers: HastNodeHandlers<TNode["type"]>;
   handleAll: (parent: Unist.Node) => ProseMirrorNode[];
   handle: (
@@ -38,5 +40,6 @@ export type ToProseMirrorParseContext<TNode extends Unist.Node = Unist.Node> = {
 };
 
 export interface ToProseMirrorCreateContextOptions<TNode extends Unist.Node> {
+  schema: Schema;
   nodeHandlers: HastNodeHandlers<TNode["type"]>;
 }

@@ -22,10 +22,12 @@ import type {
 } from "./context.js";
 import type * as Unist from "unist";
 import { handle, handleAll } from "./handler.js";
+import type { Schema } from "prosemirror-model";
 
 export interface FromUnistToProseMirrorOptions<
   TProseMirrorNodes extends string = string,
 > {
+  schema: Schema;
   nodeHandlers: HastNodeHandlers<TProseMirrorNodes>;
 }
 
@@ -34,6 +36,7 @@ export function fromUnistToProseMirror<TNode extends Unist.Node>(
   options: FromUnistToProseMirrorOptions,
 ): ProseMirrorNode | null {
   const context = createContext({
+    schema: options.schema,
     nodeHandlers: options.nodeHandlers,
   });
   const result = context.handle(unistNode, undefined);
@@ -43,9 +46,8 @@ export function fromUnistToProseMirror<TNode extends Unist.Node>(
     result[0].type === result[0].type.schema.topNodeType
   ) {
     return result[0];
-  } else {
-    throw new Error("No top level node found");
   }
+  return result as any;
 }
 
 export interface ToProseMirrorParser<
@@ -67,6 +69,7 @@ export function createContext<T extends Unist.Node>(
 ): ToProseMirrorParseContext<T> {
   const { nodeHandlers } = options;
   return {
+    schema: options.schema,
     nodeHandlers,
     handle(node, parent) {
       return handle(this, node, parent);
