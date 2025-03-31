@@ -86,7 +86,7 @@ export class ProseMirrorToUnistParseContext<
   }
 
   handleAll(pmNode: ProseMirrorNode): TNode[] {
-    return this.hydrateMarks(
+    return this.processMarks(
       pmNode.children.map((child) => ({ node: child, marks: child.marks })),
       pmNode,
     );
@@ -115,53 +115,67 @@ export class ProseMirrorToUnistParseContext<
     return null;
   }
 
-  hydrateMarks(children: PmMarkedNode[], parent: ProseMirrorNode): TNode[] {
-    const partitioned = children.reduce<PmMarkedNode[][]>((acc, child) => {
-      const lastPartition = acc[acc.length - 1];
-      if (!lastPartition) {
-        return [[child]];
-      }
-      const lastChild = lastPartition[lastPartition.length - 1];
-      if (!lastChild) {
-        return [...acc.slice(0, acc.length), [child]];
+  processMarks(children: PmMarkedNode[], parent: ProseMirrorNode): TNode[] {
+    const partitioned: PmMarkedNode[][] = [];
+    // Partition children into groups where:
+    // - Nodes without marks are grouped together
+    // - Nodes with the same first mark are grouped together
+    for (const child of children) {
+      const lastPartition = partitioned[partitioned.length - 1];
+
+      // If there is no existing partition, create a new one
+      if (!lastPartition || lastPartition.length === 0) {
+        partitioned.push([child]);
+        continue;
       }
 
+      const lastChild = lastPartition[lastPartition.length - 1];
+
+      // Check if the current child should be added to the last partition
       if (
-        (!child.marks.length && !lastChild.marks.length) ||
+        (!child.marks.length && !lastChild.marks.length) || // Both have no marks
         (child.marks.length &&
           lastChild.marks.length &&
-          child.marks[0]?.eq(lastChild.marks[0]))
+          child.marks[0]?.eq(lastChild.marks[0])) // Both have the same first mark
       ) {
-        return [
-          ...acc.slice(0, acc.length - 1),
-          [...lastPartition.slice(0, lastPartition.length), child],
-        ];
+        lastPartition.push(child);
+      } else {
+        partitioned.push([child]); // Create a new partition
       }
+    }
 
-      return [...acc, [child]];
-    }, []);
+    const result: TNode[] = [];
 
-    // @ts-expect-error Improve type
-    return (
-      partitioned
-        // @ts-expect-error Improve type
-        .flatMap((nodes) => this.#processChildPartition(nodes, parent))
-        .filter((node): node is TNode | TNode[] => !!node)
-        .flat()
-    );
+    // Process each partitioned group of nodes
+    for (const nodes of partitioned) {
+      const processed = this.#processChildPartition(nodes, parent);
+      if (processed) {
+        // Flatten the result if necessary and add it to the final output
+        // @ts-expect-error fix types
+        result.push(...(Array.isArray(processed) ? processed : [processed]));
+      }
+    }
+
+    return result;
   }
 
   #processChildPartition(nodes: PmMarkedNode[], parent: ProseMirrorNode) {
     const firstChild = nodes[0];
     const firstMark = firstChild?.marks[0];
-    if (!firstMark) return nodes.map((node) => this.handle(node.node, parent));
-    const children = this.hydrateMarks(
+
+    if (!firstMark) {
+      // No marks, just process the nodes normally
+      return nodes.map((node) => this.handle(node.node, parent));
+    }
+
+    // Recursively process the remaining marks
+    const children = this.processMarks(
       nodes.map(({ node, marks }) => ({ node, marks: marks.slice(1) })),
       parent,
     );
+
     const handler = this.markHandlers[this.markName(firstMark)];
-    if (!handler) return children;
-    // @ts-expect-error fix types
-    return handler(firstMark, parent, children, this);
+    // @ts-expect-error Fix types
+    return handler ? handler(firstMark, parent, children, this) : children;
   }
 }

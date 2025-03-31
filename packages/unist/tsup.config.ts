@@ -20,11 +20,13 @@ import type { Options } from "tsup";
 const config: Options[] = defineConfig([
   {
     name: "unist",
+    clean: true,
     entry: {
       index: "./src/index.ts",
       mdast: "./src/mdast/index.ts",
     },
     outDir: "./dist",
+    bundle: true,
     dts: true,
     format: "esm",
   },
