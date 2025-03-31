@@ -55,7 +55,7 @@
     "yaml": "^2.6.1"
   },
   "devDependencies": {
-    "eslint": "link:@tanstack/config/eslint",
+    "eslint": "^9.23.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "prettier": "^3.5.1",
     "prosemirror-test-builder": "^1.1.1",

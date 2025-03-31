@@ -14,5 +14,21 @@
  * limitations under the License.
  */
 
-export { markdownFromUnistNode } from "./markdownFromUnistNode.js";
-export { unistNodeFromMarkdown } from "./unistNodeFromMarkdown.js";
+import type { Options } from "tsup";
+import { defineConfig } from "tsup";
+
+const config: Options[] = defineConfig([
+  {
+    name: "markdown",
+    clean: true,
+    entry: {
+      index: "./src/index.ts",
+    },
+    outDir: "./dist",
+    bundle: true,
+    dts: true,
+    format: "esm",
+  },
+]) as Options[];
+
+export default config;

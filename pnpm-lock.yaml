@@ -46,6 +46,55 @@ importers:
         specifier: ^3.0.9
         version: 3.0.9(@types/debug@4.1.12)
 
+  packages/markdown:
+    dependencies:
+      '@types/mdast':
+        specifier: ^4.0.4
+        version: 4.0.4
+      '@types/unist':
+        specifier: ^3.0.3
+        version: 3.0.3
+      rehype-parse:
+        specifier: ^9.0.1
+        version: 9.0.1
+      remark-gfm:
+        specifier: ^4.0.1
+        version: 4.0.1
+      remark-parse:
+        specifier: ^11.0.0
+        version: 11.0.0
+      remark-stringify:
+        specifier: ^11.0.0
+        version: 11.0.0
+      unified:
+        specifier: ^11.0.5
+        version: 11.0.5
+      vfile:
+        specifier: ^6.0.3
+        version: 6.0.3
+    devDependencies:
+      eslint:
+        specifier: ^9.23.0
+        version: 9.23.0
+      eslint-plugin-unused-imports:
+        specifier: ^4.1.4
+        version: 4.1.4(eslint@9.23.0)
+      prettier:
+        specifier: ^3.5.1
+        version: 3.5.1
+      prosemirror-test-builder:
+        specifier: ^1.1.1
+        version: 1.1.1
+      tsup:
+        specifier: ^8.3.5
+        version: 8.3.6(postcss@8.5.2)(typescript@5.7.3)(yaml@2.7.0)
+      typescript:
+        specifier: ^5.7.3
+        version: 5.7.3
+      vitest:
+        specifier: ^3.0.9
+        version: 3.0.9(@types/debug@4.1.12)
+
   packages/unist:
     dependencies:
       '@types/mdast':
@@ -140,11 +189,11 @@ importers:
         version: 2.7.0
     devDependencies:
       eslint:
-        specifier: link:@tanstack/config/eslint
-        version: link:@tanstack/config/eslint
+        specifier: ^9.23.0
+        version: 9.23.0
       eslint-plugin-unused-imports:
         specifier: ^4.1.4
-        version: 4.1.4(eslint@packages+unist+@tanstack+config+eslint)
+        version: 4.1.4(eslint@9.23.0)
       prettier:
         specifier: ^3.5.1
         version: 3.5.1
@@ -2416,10 +2465,6 @@ snapshots:
   eslint-plugin-unused-imports@4.1.4(eslint@9.23.0):
     dependencies:
       eslint: 9.23.0
-
-  eslint-plugin-unused-imports@4.1.4(eslint@packages+unist+@tanstack+config+eslint):
-    dependencies:
-      eslint: link:packages/unist/@tanstack/config/eslint
 
   eslint-scope@8.3.0:
     dependencies:

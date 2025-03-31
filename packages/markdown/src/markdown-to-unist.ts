@@ -15,42 +15,40 @@
  */
 
 import remarkGfm from "remark-gfm";
+import type { Options as RemarkParseOptions } from "remark-parse";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
 import type { VFile, VFileCompatible } from "vfile";
 import type { Node as UnistNode, Root } from "mdast";
-import type { Options as RemarkParseOptions } from "remark-parse";
 
-type RemarkHandler = (tree: Root, vfile: VFile) => void;
-type TransformerRemarkHandler = (options?: Record<any, any>) => RemarkHandler;
-type TransformerRemarkPlugin = {
-  type: "remarkPlugin";
-  handler: TransformerRemarkHandler;
-};
+export type RemarkHandler = (tree: Root, vfile: VFile) => void;
+export type TransformerRemarkHandler = (
+  options?: Record<any, any>,
+) => RemarkHandler;
 
-export interface UnistNodeFromMarkdownOptions {
-  vfile?: VFileCompatible;
-  transformers?: TransformerRemarkPlugin[];
+export interface MarkdownToUnistOptions {
+  compatible?: VFileCompatible;
+  transformers?: TransformerRemarkHandler[];
   remarkParseOptions?: RemarkParseOptions;
 }
 
-export function unistNodeFromMarkdown(
+export function markdownToUnist(
   content: string,
-  options: UnistNodeFromMarkdownOptions = {},
+  options: MarkdownToUnistOptions = {},
 ): UnistNode {
-  const { vfile, transformers, remarkParseOptions } = options;
+  const { compatible, transformers } = options;
   const processor = unified()
     .use(remarkParse)
     .use(remarkGfm)
     .use(
       (transformers ?? []).map((transformer) => {
-        return function handler() {
-          // @ts-expect-error fix
-          return transformer.handler.call(this, {}); // Use call to keep context
+        return function handler(this: unknown) {
+          return transformer.call(this, {}); // Use call to keep context
         };
       }),
     );
 
   const parsed = processor.parse(content);
-  return processor.runSync(parsed, vfile);
+
+  return processor.runSync(parsed, compatible);
 }
