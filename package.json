@@ -22,6 +22,7 @@
     "unified": "^11.0.5"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.28.1",
     "eslint-plugin-unused-imports": "^4.1.4",
     "prettier": "^3.5.1",
     "prosemirror-test-builder": "^1.1.1",
