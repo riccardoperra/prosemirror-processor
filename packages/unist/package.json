@@ -26,11 +26,7 @@
     "@types/mdast": "^4.0.4",
     "@types/unist": "^3.0.3",
     "mdast-util-mdx-expression": "^2.0.1",
-    "prosemirror-model": "^1.25.0",
-    "rehype-parse": "^9.0.1",
-    "rehype-raw": "^7.0.0",
-    "remark-gfm": "^4.0.0",
-    "vfile": "^6.0.3"
+    "prosemirror-model": "^1.25.0"
   },
   "devDependencies": {
     "@prosemirror-processor/markdown": "workspace:*",
