@@ -22,8 +22,8 @@ import {
   type ToProseMirrorNodeHandlers,
 } from "../src/mdast/index.js";
 import { schema } from "prosemirror-test-builder";
-import { unistNodeFromMarkdown } from "../../../src/unified/index.js";
 import type { Root as MdastRoot } from "mdast";
+import { markdownToUnist } from "@prosemirror-processor/markdown";
 
 const defaultHandlers: ToProseMirrorNodeHandlers = {
   root(node, _, context) {
@@ -42,7 +42,7 @@ describe("fromUnistToProseMirror", async () => {
       paragraph: toProseMirrorNode(schema.nodes.paragraph!),
     };
 
-    const unistNode = unistNodeFromMarkdown(`
+    const unistNode = markdownToUnist(`
 This is a document.
 
 It has two paragraphs.
@@ -64,7 +64,7 @@ It has two paragraphs.
       paragraph: toProseMirrorNode(schema.nodes["paragraph"]!),
     };
 
-    const unistNode = unistNodeFromMarkdown(`
+    const unistNode = markdownToUnist(`
 This is a document.
 
 > It has two paragraphs.
@@ -90,7 +90,7 @@ This is a document.
       emphasis: toProseMirrorMark(schema.marks["em"]!),
     };
 
-    const unistNode = unistNodeFromMarkdown(`
+    const unistNode = markdownToUnist(`
 This is a *document.*
 
 It has two *paragraphs.*
@@ -120,7 +120,7 @@ It has two *paragraphs.*
       strong: toProseMirrorMark(schema.marks["strong"]!),
     };
 
-    const unistNode = unistNodeFromMarkdown(`
+    const unistNode = markdownToUnist(`
 This is a **_document._**
 
 It has two **_paragraphs._**
@@ -159,7 +159,7 @@ It has two **_paragraphs._**
       })),
     };
 
-    const unistNode = unistNodeFromMarkdown(`
+    const unistNode = markdownToUnist(`
 This is a [document.](https://github.com/handlewithcarecollective/remark-prosemirror)
 
 It has two paragraphs.
