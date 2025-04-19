@@ -5,10 +5,10 @@
   "description": "",
   "private": true,
   "scripts": {
-    "test": "vitest --run",
-    "dev": "tsup --watch",
-    "lint": "eslint ./src",
-    "build": "tsup"
+    "build": "pnpm --filter ./packages/* build",
+    "test": "pnpm --filter ./packages/* test",
+    "ci:publish": "changeset publish",
+    "ci:version": "changeset version"
   },
   "keywords": [],
   "author": "",
