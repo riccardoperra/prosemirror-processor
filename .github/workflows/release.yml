@@ -13,8 +13,6 @@ permissions:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
-
-
 jobs:
   release:
     name: Release
