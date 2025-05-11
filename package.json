@@ -5,8 +5,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "build": "pnpm --filter ./packages/* build",
-    "test": "pnpm --filter ./packages/* test",
+    "build": "pnpm --filter './packages/*' build",
+    "test": "pnpm --filter './packages/*' test",
     "ci:publish": "changeset publish",
     "ci:version": "changeset version"
   },

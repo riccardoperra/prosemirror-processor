@@ -1,8 +1,13 @@
 {
   "name": "@prosemirror-processor/unist",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.2",
   "type": "module",
   "description": "",
+  "files": [
+    "src",
+    "CHANGELOG.md",
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
