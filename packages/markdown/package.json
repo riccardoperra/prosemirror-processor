@@ -15,6 +15,11 @@
     "lint": "eslint ./src",
     "build": "tsup"
   },
+  "files": [
+    "src",
+    "CHANGELOG.md",
+    "dist"
+  ],
   "keywords": [],
   "author": "",
   "license": "Apache-2.0",
