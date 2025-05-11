@@ -1,5 +1,11 @@
 # @prosemirror-processor/markdown
 
+## 0.0.1-alpha.2
+
+### Patch Changes
+
+- dcef32b: Fix published files
+
 ## 0.0.1-alpha.1
 
 ### Patch Changes
