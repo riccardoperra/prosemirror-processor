@@ -6,6 +6,7 @@
     "@prosemirror-processor/unist": "0.0.0"
   },
   "changesets": [
+    "lovely-ducks-knock",
     "lucky-donuts-guess",
     "tidy-groups-nail"
   ]
