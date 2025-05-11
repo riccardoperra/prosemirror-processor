@@ -1,5 +1,12 @@
 # @prosemirror-processor/markdown
 
+## 0.0.1-alpha.3
+
+### Patch Changes
+
+- 4ded63e: Fix published files
+- 4ded63e: Fix missing build
+
 ## 0.0.1-alpha.1
 
 ### Patch Changes
