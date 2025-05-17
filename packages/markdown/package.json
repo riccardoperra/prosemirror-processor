@@ -11,9 +11,9 @@
   },
   "scripts": {
     "test": "vitest --run",
-    "dev": "tsup --watch",
+    "dev": "tsdown --watch",
     "lint": "eslint ./src",
-    "build": "tsup"
+    "build": "tsdown"
   },
   "files": [
     "src",
@@ -38,7 +38,7 @@
     "eslint-plugin-unused-imports": "^4.1.4",
     "prettier": "^3.5.1",
     "prosemirror-test-builder": "^1.1.1",
-    "tsup": "^8.3.5",
+    "tsdown": "^0.11.11",
     "typescript": "^5.7.3",
     "vitest": "^3.0.9"
   }
