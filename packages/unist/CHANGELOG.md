@@ -1,5 +1,11 @@
 # @prosemirror-processor/unist
 
+## 0.0.1-alpha.4
+
+### Patch Changes
+
+- be20945: add support for unknown nodes handler
+
 ## 0.0.1-alpha.3
 
 ### Patch Changes
