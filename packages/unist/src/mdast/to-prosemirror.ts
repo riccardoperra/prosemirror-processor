@@ -24,7 +24,6 @@ import {
 } from "../index.js";
 
 import type * as Mdast from "mdast";
-import type { Schema } from "prosemirror-model";
 
 export type FromMdastToProseMirror = FromUnistToProseMirror<Mdast.Nodes>;
 

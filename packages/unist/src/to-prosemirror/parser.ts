@@ -16,6 +16,7 @@
 
 import type { ProseMirrorNode } from "../types.js";
 import {
+  type ToProseMirrorNodeHandler,
   type ToProseMirrorNodeHandlers,
   UnistToProseMirrorParseContext,
 } from "./context.js";
@@ -27,6 +28,7 @@ export interface FromUnistToProseMirrorOptions<
 > {
   schema: Schema;
   nodeHandlers: ToProseMirrorNodeHandlers<TNode>;
+  unknownHandler?: ToProseMirrorNodeHandler;
 }
 
 export type FromUnistToProseMirror<TNode extends Unist.Node> = (
@@ -47,6 +49,7 @@ export const fromUnistToProseMirror: FromUnistToProseMirror<Unist.Node> = (
   const context = new UnistToProseMirrorParseContext(
     options.schema,
     options.nodeHandlers,
+    options.unknownHandler,
   );
   const result = context.handle(unistNode, undefined);
   if (

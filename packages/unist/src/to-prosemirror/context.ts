@@ -36,10 +36,16 @@ export class UnistToProseMirrorParseContext<
 > {
   readonly schema: Schema;
   readonly nodeHandlers: ToProseMirrorNodeHandlers<TNode>;
+  readonly unknownHandler: ToProseMirrorNodeHandler | undefined;
 
-  constructor(schema: Schema, nodeHandlers: ToProseMirrorNodeHandlers<TNode>) {
+  constructor(
+    schema: Schema,
+    nodeHandlers: ToProseMirrorNodeHandlers<TNode>,
+    unknownHandler: ToProseMirrorNodeHandler | undefined,
+  ) {
     this.schema = schema;
     this.nodeHandlers = nodeHandlers;
+    this.unknownHandler = unknownHandler;
   }
 
   handleAll(parent: TParentNode): ProseMirrorNode[] {
@@ -67,14 +73,16 @@ export class UnistToProseMirrorParseContext<
   ): ProseMirrorNode | ProseMirrorNode[] | null {
     const type = unistNode.type;
     // @ts-expect-error TODO: Improve types
-    const handler = this.nodeHandlers[type];
+    let handler = this.nodeHandlers[type];
     if (!handler) {
-      console.warn(
-        `Couldn't find any way to convert unist node of type "${type}" to a ProseMirror node.`,
-      );
-      return [];
+      if (!this.unknownHandler) {
+        console.warn(
+          `Couldn't find any way to convert unist node of type "${type}" to a ProseMirror node.`,
+        );
+        return [];
+      }
+      handler = this.unknownHandler;
     }
-
     const result = handler(unistNode, parent, this);
     if (!result) return [];
     return Array.isArray(result) ? result : [result];
