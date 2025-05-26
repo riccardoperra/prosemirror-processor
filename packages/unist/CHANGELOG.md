@@ -1,5 +1,11 @@
 # @prosemirror-processor/unist
 
+## 0.0.1-alpha.6
+
+### Patch Changes
+
+- ae53b59: missing unist export
+
 ## 0.0.1-alpha.5
 
 ### Patch Changes
