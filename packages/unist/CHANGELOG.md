@@ -1,5 +1,11 @@
 # @prosemirror-processor/unist
 
+## 0.0.1-alpha.5
+
+### Patch Changes
+
+- 715233a: pass `schema` into pm to-unist context
+
 ## 0.0.1-alpha.4
 
 ### Patch Changes
