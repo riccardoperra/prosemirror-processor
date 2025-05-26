@@ -51,6 +51,7 @@ export function fromProseMirrorToUnist<
     textHandler: options.textHandler,
     nodeHandlers: options.nodeHandlers,
     markHandlers: options.markHandlers,
+    schema: options.schema,
   });
   return context.handle(pmNode, undefined);
 }

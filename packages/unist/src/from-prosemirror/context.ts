@@ -16,7 +16,7 @@
 
 import type * as Unist from "unist";
 import type { ProseMirrorMark, ProseMirrorNode } from "../types.js";
-import type { Mark } from "prosemirror-model";
+import type { Mark, Schema } from "prosemirror-model";
 
 export type ProseMirrorNodeToUnistHandlers<TNode extends Unist.Node> = {
   [Type: string]: ProseMirrorNodeToUnistHandler<TNode>;
@@ -59,6 +59,7 @@ export interface FromProseMirrorCreateContextOptions<
   textHandler: ProseMirrorNodeToUnistHandler;
   nodeHandlers: ProseMirrorNodeToUnistHandlers<TNode>;
   markHandlers: ProseMirrorMarkToUnistHandlers<TMark>;
+  schema: Schema;
 }
 
 export class ProseMirrorToUnistParseContext<
@@ -70,6 +71,7 @@ export class ProseMirrorToUnistParseContext<
   readonly textHandler: ProseMirrorNodeToUnistHandler;
   readonly nodeHandlers: ProseMirrorNodeToUnistHandlers<TNode>;
   readonly markHandlers: ProseMirrorMarkToUnistHandlers<TMark>;
+  readonly schema: Schema;
 
   constructor({
     nodeName,
@@ -77,12 +79,14 @@ export class ProseMirrorToUnistParseContext<
     textHandler,
     nodeHandlers,
     markHandlers,
+    schema,
   }: FromProseMirrorCreateContextOptions<TNode, TMark>) {
     this.nodeName = nodeName;
     this.markName = markName;
     this.textHandler = textHandler;
     this.nodeHandlers = nodeHandlers;
     this.markHandlers = markHandlers;
+    this.schema = schema;
   }
 
   handleAll(pmNode: ProseMirrorNode): TNode[] {
