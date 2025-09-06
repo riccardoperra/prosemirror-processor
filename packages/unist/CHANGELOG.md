@@ -1,5 +1,11 @@
 # @prosemirror-processor/unist
 
+## 0.0.1-alpha.7
+
+### Patch Changes
+
+- 7fdeaad: update dependencies
+
 ## 0.0.1-alpha.6
 
 ### Patch Changes
